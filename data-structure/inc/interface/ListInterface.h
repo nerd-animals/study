@@ -54,10 +54,10 @@ public:
 	/*
 	* 맨 앞에 element를 추가한다.
 	*/
-	virtual int pushFront(T element) = 0;
+	virtual void pushFront(T element) = 0;
 
 	/*
 	* 맨 뒤에 element를 추가한다.
 	*/
-	virtual int pushBack(T element) = 0;
+	virtual void pushBack(T element) = 0;
 };
