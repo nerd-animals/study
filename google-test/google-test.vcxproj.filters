@@ -11,10 +11,7 @@
   </ItemGroup>
   <ItemGroup>
     <Filter Include="test">
-      <UniqueIdentifier>{8876ae38-1142-4afb-a141-ce1e3243d619}</UniqueIdentifier>
+      <UniqueIdentifier>{869d9ece-861b-49a0-bd0a-5144cc9d0a48}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
 </Project>
