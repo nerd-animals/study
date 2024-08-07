@@ -28,8 +28,8 @@ public:
 	* index가 유효하지 않다면, Error를 발생한다.
 	*/
 	virtual void insert(int index, T element) {
-		if (index > size) {
-			throw "index error";
+		if (index < 0 || index > size) {
+			throw std::out_of_range("Index out of range");
 		}
 		if (size == max_size) {
 			increase();
@@ -48,8 +48,8 @@ public:
 	* index가 유효하지 않다면, Error를 발생한다.
 	*/
 	virtual T get(int index) override {
-		if (index >= size) {
-			throw "index error";
+		if (index < 0 || index >= size) {
+			throw std::out_of_range("Index out of range");
 		}
 		return arr[index];
 	}
@@ -59,8 +59,8 @@ public:
 	* index가 유효하지 않다면, Error를 발생한다.
 	*/
 	virtual T pop(int index) override {
-		if (index >= size) {
-			throw "index error";
+		if (index < 0 || index >= size) {
+			throw std::out_of_range("Index out of range");
 		}
 		T ret = arr[index];
 
@@ -84,8 +84,8 @@ public:
 	* index가 유효하지 않다면, Error를 발생한다.
 	*/
 	virtual void set(int index, T element) override {
-		if (index >= size) {
-			throw "index error";
+		if (index < 0 || index >= size) {
+			throw std::out_of_range("Index out of range");
 		}
 		arr[index] = element;
 	}
