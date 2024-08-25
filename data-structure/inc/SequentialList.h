@@ -35,9 +35,7 @@ public:
 			increase();
 		}
 		// index ~ size-1 오른쪽으로 한칸씩!
-		for (int i = size - 1; i >= index; i--) {
-			arr[i + 1] = arr[i]; 
-		}
+		std::memcpy(&arr[index + 1], &arr[index], sizeof(T) * (size - index)); // 주의) memmove 사용해야함!
 
 		arr[index] = element;
 		size = size + 1;
@@ -65,9 +63,8 @@ public:
 		T ret = arr[index];
 
 		// index+1 ~ size-1
-		for (int i = index + 1; i < size; i++) {
-			arr[i - 1] = arr[i];
-		}
+		std::memcpy(&arr[index], &arr[index + 1], sizeof(T) * (size - index - 1)); // 주의) memmove 사용해야함!
+
 		size = size - 1;
 		return ret;
 	}
@@ -143,9 +140,7 @@ private:
 	void increase() {
 		T* tmp = new T[2 * max_size]();
 
-		for (int i = 0; i < max_size; i++) {
-			tmp[i] = arr[i];
-		}
+		std::memcpy(tmp, arr, sizeof(T) * max_size);
 
 		delete arr;
 		arr = tmp;
