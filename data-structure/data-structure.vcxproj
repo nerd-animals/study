@@ -126,7 +126,7 @@
   <ItemGroup>
     <ClInclude Include="inc\interface\ListInterface.h" />
     <ClInclude Include="inc\SequentialList.h" />
-    <ClInclude Include="inc\SinglyLinkedList.h" />
+    <ClInclude Include="inc\DoublyLinkedList.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
