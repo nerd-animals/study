@@ -1,12 +1,13 @@
 #include "pch.h"
 #include "../data-structure/inc/SequentialList.h"
 #include "../data-structure/inc/DoublyLinkedList.h"
+#include "../data-structure/inc/SinglyLinkedList.h"
 
 /*
 * Test하고 싶은 대상
 * 아래 ListTest Class의 typename T로 들어간다.
 */ 
-using TestType = ::testing::Types<DoublyLinkedList<int>>;
+using TestType = ::testing::Types<SinglyLinkedList<int>>;
 
 template<typename T>
 class ListTest : public testing::Test {
@@ -87,11 +88,14 @@ TYPED_TEST(ListTest, find) {
 TYPED_TEST(ListTest, pop) {
 	_list->pushBack(10);
 	_list->pushBack(20);
-	EXPECT_EQ(_list->pop(0), 10);
-	EXPECT_EQ(_list->length(), 1);
-	EXPECT_EQ(_list->get(0), 20);
-	EXPECT_EQ(_list->pop(0), 20);
-	EXPECT_EQ(_list->length(), 0);
+	_list->pushBack(30);
+	_list->pushBack(40);
+	_list->pushBack(50);
+	EXPECT_EQ(_list->pop(4), 50);
+	EXPECT_EQ(_list->length(), 4);
+	EXPECT_EQ(_list->pop(2), 30);
+	EXPECT_EQ(_list->length(), 3);
+	EXPECT_EQ(_list->get(2), 40);
 }
 
 TYPED_TEST(ListTest, clear_n_isEmpty) {
