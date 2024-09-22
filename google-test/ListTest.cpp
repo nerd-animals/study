@@ -58,10 +58,12 @@ TYPED_TEST(ListTest, insert) {
 	_list->pushBack(10);
 	_list->insert(1, 20);
 	_list->insert(0, 5);
-	EXPECT_EQ(_list->length(), 3);
+	_list->insert(2, 15);
+	EXPECT_EQ(_list->length(), 4);
 	EXPECT_EQ(_list->get(0), 5);
 	EXPECT_EQ(_list->get(1), 10);
-	EXPECT_EQ(_list->get(2), 20);
+	EXPECT_EQ(_list->get(2), 15);
+	EXPECT_EQ(_list->get(3), 20);
 }
 
 TYPED_TEST(ListTest, get) {
