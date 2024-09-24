@@ -48,15 +48,16 @@ public:
 		/*
 		*  [중간 삽입일 경우]
 		*	== index 위치에다가 새로운 node를 넣어야한다.
-		*	== target 앞에다가 새로운 node를 넣는다. (target == 현재 index 위치에 있는 node)
-		*	== target과 target의 prev 사이에 새로운 node를 넣는다.
-		*	== target과 target->prev의 연결관계를 재정의해줘야 한다.
+		*	== target 뒤에다가 새로운 node를 넣는다. (target == 현재 index 위치의 "직전" node)
+		*   == target과 target->next 사이에 넣는다.
+		*	== target과 target->next의 연결관계를 재정의해줘야 한다.
 		*/
 
 		/*
-		* 1) index 위치에 있는 node를 가져온다.
+		* 1) index 위치 직전에 있는 node를 가져온다.
 		*/
-		Node* target = getNode(index);
+		Node* prev = getNode(index - 1);
+		Node* target = prev->next;
 
 		/*
 		* 2) 새로운 노드를 생성한다.
@@ -64,14 +65,14 @@ public:
 		Node* node = new Node(element);
 
 		/*
-		* 3) target의 prev와 새로운 노드의 관계를 맺는다.
+		* 3) target과 새로운 노드의 관계를 맺는다.
 		*/
-		//target->prev->next = node; // target의 이전 노드의 다음은 node가 된다. (원래는 target이었을 것이다.)
-		//node->prev = target->prev; // node의 이전 노드가 target의 prev가 된다.
-
-		// 4) target과 새로운 노드의 관계를 맺는다.
-		//target->prev = node; // 이제 target의 이전 노드는 node가 된다.
 		node->next = target; // node의 다음 노드는 target이 된다.
+
+		/*
+		* 4) target의 이전 노드와 새로운 노드의 관계를 맺는다.
+		*/
+		prev->next = node; // target의 prev 이후에 node가 들어간다.
 
 		size = size + 1;
 
@@ -99,45 +100,41 @@ public:
 			throw std::out_of_range("Index out of range");
 		}
 
-		/*
-		* 1) target의 value를 찾는다.
-		* target node는 지울거니까 value를 임시 저장한다.
-		* ret: return할 value
-		*/
-		Node* target = getNode(index);
-		T ret = target->value;
+		T ret; // pop 대상 node는 지워져야하기 때문에 return할 수 있도록 따로 저장해둔다.
 
 		/*
-		* 2) target의 전/후 연결 관계를 재정의한다.
-		*
-		*    target이 저장하고 있는 연결 정보는 굳이 업데이트 안해도된다. (어차피 삭제할거니까)
+		* (point) 앞으로 돌아갈 수가 없기 때문에 pop 대상 직전 Node에서 처리해야한다.
 		*/
 
-		// target이 head이면서 tail이면?
-		if (target == head && target == tail) {
-			//   원소가 하나밖에 없는 경우이기 때문에 둘 다 아무것도 저장하지 않도록 한다.
-			head = tail = nullptr;
+		/*
+		* head의 직전 Node는 없기 때문에 따로 처리한다.
+		*/
+		if (index == 0) {
+			ret = head->value;
+			Node* tmp = head; // head가 가르키고 있는 Node를 지우기 위해 잠시 저장한다.
+			head = head->next; // 이제 head는 다음 Node가 된다.
+			delete tmp; // 원래 맨 앞에 있던 Node는 지운다.
 		}
-		// target이 가장 맨 앞(head)이라면?
-		else if (target == head) {
-			head = target->next; // 이제 target의 다음이 head가 된다.
-			//head->prev = nullptr; // 이제는 맨 앞이되었으니 이전 노드(target)의 정보를 없앤다.
-		}
-		// target이 가장 맨 뒤(tail)이라면?
-		else if (target == tail) {
-			//tail = target->prev; // target의 이전 Node가 tail이 된다.
-			tail->next = nullptr; // 맨 뒤니까 target을 보고 있던 next의 정보를 없댄다.
-		}
-		// target이 중간에 있다면??
+		/*
+		* 그 외는 직전 Node를 찾아서 처리한다.
+		*/
 		else {
-			//target->prev->next = target->next; // target의 이전 Node가 바라보는 다음 노드는 target의 다음 노드가 된다.
-			//target->next->prev = target->prev; // target의 다음 Node가 바라보는 이전 노드는 target의 이전 노드가 된다.
+			Node* prev = getNode(index - 1); // 직전 Node를 찾는다.
+			Node* target = prev->next; // target이 pop해야할 node이다.
+			ret = target->value; // value를 따로 저장해둔다.
+
+			
+			if (target == tail) { // target이 tail이라면 tail을 업데이트해줘야한다.
+				tail = prev; // 가장 마지막 Node(tail)는 prev가 된다.
+				prev->next = nullptr; // prev뒤에는 아무것도 없다.
+			}
+			else { // 나머지는 그냥 중간에 있을 때다.
+				prev->next = target->next; // prev의 다음은 target이 아니라, target의 next가 된다.
+			}
+
+			delete target; // target은 이제 지우자.
 		}
 
-		/*
-		* 3) target을 삭제하고 size를 1개 줄인다.
-		*/
-		delete target;
 		size = size - 1;
 
 		return ret;
@@ -230,7 +227,6 @@ public:
 		}
 		else {
 			// 가장 맨 앞(head)에 node를 연결해줘야 한다.
-			//head->prev = node; // 현재 가장 앞(head)의 prev가 node가 된다.
 			node->next = head; // node가 가장 앞으로 가게되니까, node의 next가 지금의 head가 된다.
 			head = node; // 이제 node가 가장 맨 앞(head)에 있다
 		}
@@ -254,7 +250,6 @@ public:
 		else {
 			// 가장 맨 뒤(tail)에 node를 연결해줘야 한다.
 			tail->next = node; // 현재 가장 뒤(tail)의 next가 node가 된다.
-			// node->prev = tail; // node가 가장 뒤으로 가게되니까, node의 prev가 지금의 tail이 된다.
 			tail = node; // 이제 node가 가장 맨 뒤(tail)에 있다
 		}
 
