@@ -7,7 +7,7 @@
 * Test하고 싶은 대상
 * 아래 ListTest Class의 typename T로 들어간다.
 */ 
-using TestType = ::testing::Types<SinglyLinkedList<int>>;
+using TestType = ::testing::Types<SequentialList<int>, DoublyLinkedList<int>, SinglyLinkedList<int>>;
 
 template<typename T>
 class ListTest : public testing::Test {
@@ -122,66 +122,66 @@ TYPED_TEST(ListTest, OutOfRange_Exceptions) {
 	EXPECT_THROW(_list->insert(-1, 1), std::out_of_range);
 }
 
-//TYPED_TEST(ListTest, pushBack_Performance) {
-//	for (int i = 0; i < TEST_SIZE; i++) {
-//		_list->pushBack(i);
-//	}
-//	EXPECT_EQ(_list->length(), TEST_SIZE);
-//}
-//
-//TYPED_TEST(ListTest, pushFront_Performance) {
-//	for (int i = 0; i < TEST_SIZE; i++) {
-//		_list->pushFront(i);
-//	}
-//	EXPECT_EQ(_list->length(), TEST_SIZE);
-//}
-//
-//TYPED_TEST(ListTest, get_Performance) {
-//	// get-set은 동작 방식이 거의 동일함
-//	for (int i = 0; i < TEST_SIZE; i++) {
-//		_list->pushBack(i);
-//	}
-//	EXPECT_EQ(_list->length(), TEST_SIZE);
-//
-//	for (int i = 0; i < TEST_SIZE; i++) {
-//		EXPECT_EQ(_list->get(i), i);
-//	}
-//	EXPECT_EQ(_list->length(), TEST_SIZE);
-//}
-//
-//TYPED_TEST(ListTest, pop_front_Performance) {
-//	for (int i = 0; i < TEST_SIZE; i++) {
-//		_list->pushBack(i);
-//	}
-//	EXPECT_EQ(_list->length(), TEST_SIZE);
-//
-//	for (int i = 0; i < TEST_SIZE; i++) {
-//		EXPECT_EQ(_list->pop(0), i);
-//	}
-//	EXPECT_EQ(_list->length(), 0);
-//}
-//
-//TYPED_TEST(ListTest, pop_back_Performance) {
-//	for (int i = 0; i < TEST_SIZE; i++) {
-//		_list->pushBack(i);
-//	}
-//	EXPECT_EQ(_list->length(), TEST_SIZE);
-//
-//	for (int i = TEST_SIZE - 1; i >= 0; i--) {
-//		EXPECT_EQ(_list->pop(i), i);
-//	}
-//	EXPECT_EQ(_list->length(), 0);
-//}
-//
-//TYPED_TEST(ListTest, find_Performance) {
-//	for (int i = 0; i < TEST_SIZE; i++) {
-//		_list->pushBack(i);
-//	}
-//	EXPECT_EQ(_list->length(), TEST_SIZE);
-//
-//	for (int i = TEST_SIZE - 1; i >= 0; i--) {
-//		EXPECT_EQ(_list->find(i), i);
-//	}
-//
-//	EXPECT_EQ(_list->find(TEST_SIZE), -1);
-//}
+TYPED_TEST(ListTest, pushBack_Performance) {
+	for (int i = 0; i < TEST_SIZE; i++) {
+		_list->pushBack(i);
+	}
+	EXPECT_EQ(_list->length(), TEST_SIZE);
+}
+
+TYPED_TEST(ListTest, pushFront_Performance) {
+	for (int i = 0; i < TEST_SIZE; i++) {
+		_list->pushFront(i);
+	}
+	EXPECT_EQ(_list->length(), TEST_SIZE);
+}
+
+TYPED_TEST(ListTest, get_Performance) {
+	// get-set은 동작 방식이 거의 동일함
+	for (int i = 0; i < TEST_SIZE; i++) {
+		_list->pushBack(i);
+	}
+	EXPECT_EQ(_list->length(), TEST_SIZE);
+
+	for (int i = 0; i < TEST_SIZE; i++) {
+		EXPECT_EQ(_list->get(i), i);
+	}
+	EXPECT_EQ(_list->length(), TEST_SIZE);
+}
+
+TYPED_TEST(ListTest, pop_front_Performance) {
+	for (int i = 0; i < TEST_SIZE; i++) {
+		_list->pushBack(i);
+	}
+	EXPECT_EQ(_list->length(), TEST_SIZE);
+
+	for (int i = 0; i < TEST_SIZE; i++) {
+		EXPECT_EQ(_list->pop(0), i);
+	}
+	EXPECT_EQ(_list->length(), 0);
+}
+
+TYPED_TEST(ListTest, pop_back_Performance) {
+	for (int i = 0; i < TEST_SIZE; i++) {
+		_list->pushBack(i);
+	}
+	EXPECT_EQ(_list->length(), TEST_SIZE);
+
+	for (int i = TEST_SIZE - 1; i >= 0; i--) {
+		EXPECT_EQ(_list->pop(i), i);
+	}
+	EXPECT_EQ(_list->length(), 0);
+}
+
+TYPED_TEST(ListTest, find_Performance) {
+	for (int i = 0; i < TEST_SIZE; i++) {
+		_list->pushBack(i);
+	}
+	EXPECT_EQ(_list->length(), TEST_SIZE);
+
+	for (int i = TEST_SIZE - 1; i >= 0; i--) {
+		EXPECT_EQ(_list->find(i), i);
+	}
+
+	EXPECT_EQ(_list->find(TEST_SIZE), -1);
+}
