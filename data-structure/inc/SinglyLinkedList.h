@@ -269,6 +269,9 @@ private:
 	*  맨 앞(head)에서 index 횟수만큼 next로 이동하면 된다.
 	*/
 	Node* getNode(int index) {
+		if (index == 0) return head;
+		else if (index == size - 1) return tail;
+
 		int cnt = 0;
 		Node* target = head;
 		while (cnt < index) {
